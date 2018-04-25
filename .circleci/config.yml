@@ -10,11 +10,6 @@ jobs:
             - dependencies-cache-{{ checksum "package.json" }}
             - dependencies-cache
       - run:
-          name: Setup CodeClimate test-reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-      - run:
           name: Install dependencies
           command: |
             npm install
