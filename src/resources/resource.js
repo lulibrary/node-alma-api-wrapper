@@ -1,7 +1,9 @@
 class Resource {
-  constructor (path, api) {
+  constructor (path, api, resourceName, resourceID) {
     this.path = path
     this.api = api
+    this.path.append(`/${resourceName}`)
+    resourceID ? this.path.append(`/${resourceID}`) : null
   }
 
   get () {

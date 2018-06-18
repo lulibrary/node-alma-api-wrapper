@@ -1,12 +1,10 @@
 const Resource = require('./resource')
 const Loan = require('./loan')
-const Request = require('./alma-request')
+const Request = require('./request')
 
 class User extends Resource {
   constructor (path, api, userID) {
-    super(path, api)
-    path.append('/users')
-    userID ? path.append(`/${userID}`) : null
+    super(path, api, 'users', userID)
   }
 
   Loans (loanID) {
