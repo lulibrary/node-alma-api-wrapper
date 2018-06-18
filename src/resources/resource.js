@@ -6,7 +6,8 @@ class Resource {
     resourceID ? this.path.append(`/${resourceID}`) : null
   }
 
-  get () {
+  get (resourceID) {
+    resourceID ? this.path.append(`/${resourceID}`) : null
     return this.api.get(this.path.toString()).then(res => res.data)
   }
 }

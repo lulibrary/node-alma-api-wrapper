@@ -25,5 +25,6 @@ class Alma {
 
 let alma = new Alma()
 
-alma.Users('some-user').Requests().get().then(console.log).catch(console.log)
+// alma.Users('some-user').Requests().get().then(console.log).catch(console.log)
 
+module.exports = alma
