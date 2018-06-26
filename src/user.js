@@ -16,6 +16,12 @@ class User extends Resource {
   }
 }
 
-User.Resource = User
+User.config = {}
+
+User.resource = {
+  name: 'user',
+  path: 'users',
+  Class: User
+}
 
 module.exports = User

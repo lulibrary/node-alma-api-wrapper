@@ -8,18 +8,18 @@ class Resource {
   }
 
   static get (userID, api) {
-    return api.get(`/users/${userID}`)
+    return (api || this.config.api).get(`/${this.resource.path}/${userID}`)
       .then((data) => {
-        return new this.Resource(data, { api })
+        return new this.resource.Class(data, api ? { api } : null)
       })
   }
 
   static for (userID, api) {
-    return new this.Resource({ primary_id: userID }, api ? { api } : null)
+    return new this.resource.Class({ primary_id: userID }, api ? { api } : null)
   }
 
   static new (userID, api) {
-    return new this.Resource({ primary_id: userID }, api ? { api } : null)
+    return new this.resource.Class({ primary_id: userID }, api ? { api } : null)
   }
 
   static setConfig (config) {
@@ -28,7 +28,11 @@ class Resource {
   }
 }
 
-Resource.Resource = Resource
+Resource.resource = {
+  name: 'resource',
+  path: '',
+  Class: Resource
+}
 Resource.config = {}
 
 module.exports = Resource
