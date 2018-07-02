@@ -1,27 +1,34 @@
-const Resource = require('./resource')
-const Loan = require('./loan')
+const BaseResource = require('./base-resource')
+const UserLoan = require('./user-loan')
+const Request = require('./user-request')
 
-class User extends Resource {
+class User extends BaseResource {
   loans () {
-    if (this.resources.loans) {
-      return Promise.resolve(this.resources.loans)
-    } else {
-      return this.config.api.get(`/users/${this.data.primary_id}/loans/`)
-        .then((data) => {
-          this.resources.loans = new Map()
-          data.item_loan.forEach(loan => this.resources.loans.set(loan.loan_id, new Loan(loan)))
-          return this.resources.loans
-        })
-    }
+    return this.getSubResourceMap('loans')
+  }
+
+  requests () {
+    return this.getSubResourceMap('requests')
   }
 }
 
-User.config = {}
-
-User.resource = {
-  name: 'user',
-  path: 'users',
-  Class: User
+User.config = {
+  path: (userID) => `/users/${userID}`,
+  id: 'primary_id'
+}
+User.children = {
+  loans: {
+    key: 'item_loan',
+    id: 'loan_id',
+    Class: UserLoan,
+    path: (userID) => `/users/${userID}/loans`
+  },
+  requests: {
+    key: 'user_request',
+    id: 'request_id',
+    Class: Request,
+    path: (userID) => `/users/${userID}/requests`
+  }
 }
 
 module.exports = User

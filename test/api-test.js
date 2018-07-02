@@ -14,7 +14,6 @@ const axios = require('axios')
 // Module under test
 const AlmaAxios = require('../src/api')
 
-
 describe('Alma Axios class tests', () => {
   afterEach(() => {
     sandbox.restore()
@@ -22,7 +21,6 @@ describe('Alma Axios class tests', () => {
 
   describe('constructor tests', () => {
     it('should create an instance of Axios', () => {
-
       const createStub = sandbox.stub(axios, 'create')
       createStub.returns('AXIOS')
 
@@ -60,9 +58,8 @@ describe('Alma Axios class tests', () => {
       }
 
       return testClient.get(path, testConfig).then(() => {
-        getStub.should.have.been.calledWith(path,testConfig)
+        getStub.should.have.been.calledWith(path, testConfig)
       })
-      
     })
 
     it('should resolve with the data property of the axios result', () => {
@@ -87,4 +84,3 @@ describe('Alma Axios class tests', () => {
     })
   })
 })
-
