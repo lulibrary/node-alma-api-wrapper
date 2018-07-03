@@ -1,1 +1,3 @@
-module.exports = {}
+module.exports = {
+  AlmaClient: require('./alma-client')
+}
