@@ -1,6 +1,6 @@
 const BaseResource = require('./base-resource')
 const UserLoan = require('./user-loan')
-const Request = require('./user-request')
+const UserRequest = require('./user-request')
 
 class User extends BaseResource {
   loans () {
@@ -9,6 +9,14 @@ class User extends BaseResource {
 
   requests () {
     return this.getSubResourceMap('requests')
+  }
+
+  getLoan (loanID) {
+    return this.getSubResource('loans', loanID)
+  }
+
+  getRequest (requestID) {
+    return this.getSubResource('requests', requestID)
   }
 }
 
@@ -26,7 +34,7 @@ User.children = {
   requests: {
     key: 'user_request',
     id: 'request_id',
-    Class: Request,
+    Class: UserRequest,
     path: (userID) => `/users/${userID}/requests`
   }
 }

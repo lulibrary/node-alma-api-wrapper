@@ -429,7 +429,7 @@ describe('BaseResource class tests', () => {
         const testID = uuid()
 
         testResource.getSubResourceFromApi('testChild', testID)
-        getStub.should.have.been.calledWith(testID)
+        getStub.should.have.been.calledWith(testResourceID, testID)
       })
 
       it('should add the child instance to the subResourceMap', () => {

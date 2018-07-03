@@ -182,6 +182,7 @@ describe('User class tests', () => {
         delete require.cache[require.resolve('../src/user')]
         const NewUser = require('../src/user')
         NewUser.config = {}
+        NewUser.children = {}
 
         BaseResource.config = {}
         const testConfig = {

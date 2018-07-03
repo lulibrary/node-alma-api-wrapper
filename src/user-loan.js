@@ -1,6 +1,6 @@
-const Resource = require('./base-resource')
+const BaseResource = require('./base-resource')
 
-class UserLoan extends Resource {}
+class UserLoan extends BaseResource {}
 
 UserLoan.config = {
   path: (userID, loanID) => `/users/${userID}/loans/${loanID}`,

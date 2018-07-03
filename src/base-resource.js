@@ -23,8 +23,15 @@ class BaseResource {
     return new this(id)
   }
 
-  static setConfig (config, path) {
+  static setConfig (config) {
     _merge(this.config, config)
+    if (this.children) {
+      Object.keys(this.children).forEach(key => {
+        if (this.children[key].Class !== this) {
+          this.children[key].Class.setConfig(config)
+        }
+      })
+    }
     return this
   }
 
@@ -37,7 +44,7 @@ class BaseResource {
       ? Promise.resolve(subResourceMap)
       : this.config.api.get(path)
         .then((data) => {
-          this.subResources[name] = new Map(data[child.key].map(subResource => [subResource[child.id], new child.Class(subResource)]))
+          this.subResources[name] = data.length !== 0 ? new Map(data[child.key].map(subResource => [subResource[child.id], new child.Class(subResource)])) : new Map()
           return this.subResources[name]
         })
   }
@@ -53,7 +60,7 @@ class BaseResource {
     const child = this.constructor.children[name]
     let subResourceMap = this.subResources[name]
 
-    return child.Class.get(id)
+    return child.Class.get(this.id, id)
       .then(childInstance => {
         if (subResourceMap) {
           subResourceMap.set(id, childInstance)
