@@ -43,7 +43,7 @@ class BaseResource {
     const path = child.path(this.id)
 
     return subResourceMap
-      ? Promise.resolve(subResourceMap)
+      ? Promise.resolve(subResourceMap) // Return existing resourceMap or create new Map from API response
       : this.config.api.get(path)
         .then((responseData) => {
           const responseList = responseData[child.almaResourceName]

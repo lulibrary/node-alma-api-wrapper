@@ -18,6 +18,14 @@ class User extends BaseResource {
   getRequest (requestID) {
     return this.getSubResource('requests', requestID)
   }
+
+  getLoanFromApi (loanID) {
+    return this.getSubResourceFromApi('loans', loanID)
+  }
+
+  getRequestFromApi (requestID) {
+    return this.getSubResourceFromApi('requests', requestID)
+  }
 }
 
 User.config = {
