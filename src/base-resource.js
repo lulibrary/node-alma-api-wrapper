@@ -37,13 +37,14 @@ class BaseResource {
     return this
   }
 
+  // Return existing resourceMap or create new Map from API response
   getSubResourceMap (name) {
     let subResourceMap = this.subResources[name]
     const child = this.constructor.children[name]
     const path = child.path(this.id)
 
     return subResourceMap
-      ? Promise.resolve(subResourceMap) // Return existing resourceMap or create new Map from API response
+      ? Promise.resolve(subResourceMap)
       : this.config.api.get(path)
         .then((responseData) => {
           const responseList = responseData[child.almaResourceName]
@@ -54,6 +55,7 @@ class BaseResource {
         })
   }
 
+  // Return existing subResource or instantiate new subResource using API
   getSubResource (name, id) {
     let subResourceMap = this.subResources[name]
     return (subResourceMap && subResourceMap.has(id))
@@ -61,6 +63,7 @@ class BaseResource {
       : this.getSubResourceFromApi(name, id)
   }
 
+  // Instantiate new subResource using API
   getSubResourceFromApi (name, id) {
     const child = this.constructor.children[name]
     let subResourceMap = this.subResources[name]
@@ -77,13 +80,12 @@ class BaseResource {
   }
 }
 
+// Create a Map of subResources instances
 const createSubResourceMap = (subResources, ResourceClass, idKey) => {
-  return new Map(subResources.map(subResource => [subResource[idKey], new ResourceClass(subResource)]))
+  const mapValues = subResources.map(subResource => [subResource[idKey], new ResourceClass(subResource)])
+  return new Map(mapValues)
 }
 
-BaseResource.apiData = {
-  path: () => '/'
-}
 BaseResource.config = {}
 
 module.exports = BaseResource
