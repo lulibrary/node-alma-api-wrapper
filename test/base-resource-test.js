@@ -243,8 +243,8 @@ describe('BaseResource class tests', () => {
         BaseResource.children = {
           testChild: {
             path: (resID) => `/testRes/${resID}/testChild`,
-            key: 'test_res',
-            id: 'resource_id',
+            almaResourceName: 'test_res',
+            almaResourceID: 'resource_id',
             Class: BaseResource
           }
         }

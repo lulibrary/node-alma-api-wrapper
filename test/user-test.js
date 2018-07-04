@@ -334,14 +334,14 @@ describe('User class tests', () => {
     })
 
     it('should have the correct loans child config', () => {
-      CleanUser.children.loans.key.should.equal('item_loan')
-      CleanUser.children.loans.id.should.equal('loan_id')
+      CleanUser.children.loans.almaResourceName.should.equal('item_loan')
+      CleanUser.children.loans.almaResourceID.should.equal('loan_id')
       CleanUser.children.loans.Class.should.deep.equal(CleanUserLoan)
     })
 
     it('should have the correct requests child config', () => {
-      CleanUser.children.requests.key.should.equal('user_request')
-      CleanUser.children.requests.id.should.equal('request_id')
+      CleanUser.children.requests.almaResourceName.should.equal('user_request')
+      CleanUser.children.requests.almaResourceID.should.equal('request_id')
       CleanUser.children.requests.Class.should.deep.equal(UserRequest)
     })
   })
