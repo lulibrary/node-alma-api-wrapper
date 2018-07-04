@@ -22,7 +22,7 @@ describe('api call tests', () => {
   beforeEach(() => {
     almaApi = new AlmaClient({
       region: 'eu',
-      apikey: null
+      apikey: 'key'
     })
   })
 

@@ -4,6 +4,7 @@ const chaiAsPromised = require('chai-as-promised')
 chai.use(sinonChai)
 chai.use(chaiAsPromised)
 chai.should()
+const expect = chai.expect
 
 const rewire = require('rewire')
 
@@ -28,7 +29,7 @@ describe('AlmaClient class tests', () => {
   })
 
   after(() => {
-    process.env.ALMA_KEY = testKey
+    delete process.env.ALMA_KEY
   })
 
   afterEach(() => {
@@ -79,13 +80,23 @@ describe('AlmaClient class tests', () => {
       })
     })
 
+    it('should throw an error if no apikey is passed and the env variable is undefined', () => {
+      delete process.env.ALMA_KEY
+
+      expect(() => new AlmaClient()).to.throw('Missing API key')
+    })
+
     it('should set the users object to be the User class', () => {
+      process.env.ALMA_KEY = testKey
+
       const testClient = new AlmaClient()
 
       testClient.users.should.deep.equal(User)
     })
 
     it('should call setConfig on User', () => {
+      process.env.ALMA_KEY = testKey
+
       const setConfigStub = sandbox.stub(User, 'setConfig')
       setConfigStub.returns(User)
 
