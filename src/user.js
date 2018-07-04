@@ -26,14 +26,14 @@ User.config = {
 }
 User.children = {
   loans: {
-    key: 'item_loan',
-    id: 'loan_id',
+    almaResourceName: 'item_loan',
+    almaResourceID: 'loan_id',
     Class: UserLoan,
     path: (userID) => `/users/${userID}/loans`
   },
   requests: {
-    key: 'user_request',
-    id: 'request_id',
+    almaResourceName: 'user_request',
+    almaResourceID: 'request_id',
     Class: UserRequest,
     path: (userID) => `/users/${userID}/requests`
   }

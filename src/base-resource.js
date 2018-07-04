@@ -27,9 +27,10 @@ class BaseResource {
     _merge(this.config, config)
     // Sets the config on any child Classes
     if (this.children) {
-      Object.keys(this.children).forEach(key => {
-        if (this.children[key].Class !== this) { // Avoid recursively setting config on the same class
-          this.children[key].Class.setConfig(config)
+      Object.keys(this.children).forEach(childName => {
+        const ChildClass = this.children[childName].Class
+        if (ChildClass !== this) { // Avoid recursively setting config on the same class
+          ChildClass.setConfig(config)
         }
       })
     }
@@ -44,9 +45,10 @@ class BaseResource {
     return subResourceMap
       ? Promise.resolve(subResourceMap)
       : this.config.api.get(path)
-        .then((data) => {
-          this.subResources[name] = data[child.key].length !== 0
-            ? createSubResourceMap(data[child.key], child.Class, child.id)
+        .then((responseData) => {
+          const responseList = responseData[child.almaResourceName]
+          this.subResources[name] = responseList.length !== 0
+            ? createSubResourceMap(responseList, child.Class, child.almaResourceID)
             : new Map()
           return this.subResources[name]
         })
