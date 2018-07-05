@@ -56,6 +56,13 @@ describe('api call tests', () => {
           res.id.should.equal(testUserID)
         })
     })
+
+    it('should handle an invalid username', () => {
+      const axiosStub = sandbox.stub(almaApi.api, 'get')
+      axiosStub.rejects(new Error('Request failed with status code 400'))
+
+      return almaApi.users.get(uuid()).should.eventually.be.rejectedWith('Request failed with status code 400')
+    })
   })
 
   describe('path: /users/<userID>/loans', () => {
@@ -105,6 +112,23 @@ describe('api call tests', () => {
           }
         })
     })
+
+    it('should handle an empty response', () => {
+      const testUserID = uuid()
+
+      const apiResponse = {
+        total_record_count: 0
+      }
+
+      const axiosStub = sandbox.stub(almaApi.api, 'get')
+      axiosStub.resolves(apiResponse)
+
+      return almaApi.users.for(testUserID).loans()
+        .then((res) => {
+          res.should.be.an.instanceOf(Map)
+          res.size.should.equal(0)
+        })
+    })
   })
 
   describe('path: /users/<userID>/loans/<loanID>', () => {
@@ -134,6 +158,13 @@ describe('api call tests', () => {
           res.data.should.deep.equal({ loan_id: testLoanID })
           res.id.should.equal(testLoanID)
         })
+    })
+
+    it('should handle an invalid loan ID', () => {
+      const axiosStub = sandbox.stub(almaApi.api, 'get')
+      axiosStub.rejects(new Error('Request failed with status code 500'))
+
+      return almaApi.users.for(uuid()).getLoan(uuid()).should.eventually.be.rejectedWith('Request failed with status code 500')
     })
   })
 
@@ -184,6 +215,23 @@ describe('api call tests', () => {
           }
         })
     })
+
+    it('should handle an empty response', () => {
+      const testUserID = uuid()
+
+      const apiResponse = {
+        total_record_count: 0
+      }
+
+      const axiosStub = sandbox.stub(almaApi.api, 'get')
+      axiosStub.resolves(apiResponse)
+
+      return almaApi.users.for(testUserID).requests()
+        .then((res) => {
+          res.should.be.an.instanceOf(Map)
+          res.size.should.equal(0)
+        })
+    })
   })
 
   describe('path: /users/<userID>/requests/<requestID>', () => {
@@ -213,6 +261,13 @@ describe('api call tests', () => {
           res.data.should.deep.equal({ request_id: testRequestID })
           res.id.should.equal(testRequestID)
         })
+    })
+
+    it('should handle an invalid loan ID', () => {
+      const axiosStub = sandbox.stub(almaApi.api, 'get')
+      axiosStub.rejects(new Error('Request failed with status code 500'))
+
+      return almaApi.users.for(uuid()).getRequest(uuid()).should.eventually.be.rejectedWith('Request failed with status code 500')
     })
   })
 })

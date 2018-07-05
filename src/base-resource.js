@@ -48,7 +48,7 @@ class BaseResource {
       : this.config.api.get(path)
         .then((responseData) => {
           const responseList = responseData[child.almaResourceName]
-          this.subResources[name] = responseList.length !== 0
+          this.subResources[name] = (responseList && responseList.length !== 0)
             ? createSubResourceMap(responseList, child.Class, child.almaResourceID)
             : new Map()
           return this.subResources[name]
