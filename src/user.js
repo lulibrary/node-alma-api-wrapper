@@ -4,27 +4,27 @@ const UserRequest = require('./user-request')
 
 class User extends BaseResource {
   loans () {
-    return this.getSubResourceMap('loans')
+    return this._getSubResourceMap('loans')
   }
 
   requests () {
-    return this.getSubResourceMap('requests')
+    return this._getSubResourceMap('requests')
   }
 
   getLoan (loanID) {
-    return this.getSubResource('loans', loanID)
+    return this._getSubResource('loans', loanID)
   }
 
   getRequest (requestID) {
-    return this.getSubResource('requests', requestID)
+    return this._getSubResource('requests', requestID)
   }
 
   getLoanFromApi (loanID) {
-    return this.getSubResourceFromApi('loans', loanID)
+    return this._getSubResourceFromApi('loans', loanID)
   }
 
   getRequestFromApi (requestID) {
-    return this.getSubResourceFromApi('requests', requestID)
+    return this._getSubResourceFromApi('requests', requestID)
   }
 }
 

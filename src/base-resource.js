@@ -38,7 +38,7 @@ class BaseResource {
   }
 
   // Return existing resourceMap or create new Map from API response
-  getSubResourceMap (name) {
+  _getSubResourceMap (name) {
     let subResourceMap = this.subResources[name]
     const child = this.constructor.children[name]
     const path = child.path(this.id)
@@ -56,15 +56,15 @@ class BaseResource {
   }
 
   // Return existing subResource or instantiate new subResource using API
-  getSubResource (name, id) {
+  _getSubResource (name, id) {
     let subResourceMap = this.subResources[name]
     return (subResourceMap && subResourceMap.has(id))
       ? Promise.resolve(this.subResources[name].get(id))
-      : this.getSubResourceFromApi(name, id)
+      : this._getSubResourceFromApi(name, id)
   }
 
   // Instantiate new subResource using API
-  getSubResourceFromApi (name, id) {
+  _getSubResourceFromApi (name, id) {
     const child = this.constructor.children[name]
     let subResourceMap = this.subResources[name]
 

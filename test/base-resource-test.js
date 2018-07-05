@@ -238,7 +238,7 @@ describe('BaseResource class tests', () => {
   })
 
   describe('instance method tests', () => {
-    describe('getSubResourceMap method tests', () => {
+    describe('_getSubResourceMap method tests', () => {
       before(() => {
         BaseResource.children = {
           testChild: {
@@ -255,7 +255,7 @@ describe('BaseResource class tests', () => {
         const testResource = new BaseResource(testResourceID)
         testResource.subResources.testChild = new Map([[uuid(), uuid()]])
 
-        testResource.getSubResourceMap('testChild')
+        testResource._getSubResourceMap('testChild')
           .then((res) => {
             res.should.be.an.instanceOf(Map)
             res.should.deep.equal(testResource.subResources.testChild)
@@ -271,7 +271,7 @@ describe('BaseResource class tests', () => {
         const getStub = sandbox.stub(testResource.config.api, 'get')
         getStub.returns({ then: () => null })
 
-        testResource.getSubResourceMap('testChild')
+        testResource._getSubResourceMap('testChild')
         getStub.should.have.been.calledWith(`/testRes/${testResourceID}/testChild`)
       })
 
@@ -299,7 +299,7 @@ describe('BaseResource class tests', () => {
         const getStub = sandbox.stub(testResource.config.api, 'get')
         getStub.resolves(apiResponse)
 
-        return testResource.getSubResourceMap('testChild')
+        return testResource._getSubResourceMap('testChild')
           .then((res) => {
             res.should.be.an.instanceOf(Map)
             res.get(testIDs[0]).should.deep.equal(new BaseResource(apiResponse.test_res[0]))
@@ -332,7 +332,7 @@ describe('BaseResource class tests', () => {
         const getStub = sandbox.stub(testResource.config.api, 'get')
         getStub.resolves(apiResponse)
 
-        return testResource.getSubResourceMap('testChild')
+        return testResource._getSubResourceMap('testChild')
           .then(() => {
             testResource.subResources.testChild.should.be.an.instanceOf(Map)
             testResource.subResources.testChild.get(testIDs[0]).should.deep.equal(new BaseResource(apiResponse.test_res[0]))
@@ -342,7 +342,7 @@ describe('BaseResource class tests', () => {
       })
     })
 
-    describe('getSubResource method tests', () => {
+    describe('_getSubResource method tests', () => {
       before(() => {
         BaseResource.children = {
           testChild: {
@@ -364,13 +364,13 @@ describe('BaseResource class tests', () => {
           testChild: new Map([[testID, testSubResource]])
         }
 
-        return testResource.getSubResource('testChild', testID)
+        return testResource._getSubResource('testChild', testID)
           .then(res => {
             res.should.equal(testSubResource)
           })
       })
 
-      it('should call getSubResourceFromApi if the subResource is not in the Map', () => {
+      it('should call _getSubResourceFromApi if the subResource is not in the Map', () => {
         const testResourceID = uuid()
         const testResource = new BaseResource(testResourceID, { api: testAxios })
 
@@ -380,32 +380,32 @@ describe('BaseResource class tests', () => {
 
         const testID = uuid()
 
-        const fromApiStub = sandbox.stub(testResource, 'getSubResourceFromApi')
+        const fromApiStub = sandbox.stub(testResource, '_getSubResourceFromApi')
         fromApiStub.resolves(true)
 
-        return testResource.getSubResource('testChild', testID)
+        return testResource._getSubResource('testChild', testID)
           .then(() => {
             fromApiStub.should.have.been.calledWith('testChild', testID)
           })
       })
 
-      it('should call getSubResourceFromApi if the Map is not defined', () => {
+      it('should call _getSubResourceFromApi if the Map is not defined', () => {
         const testResourceID = uuid()
         const testResource = new BaseResource(testResourceID, { api: testAxios })
 
         const testID = uuid()
 
-        const fromApiStub = sandbox.stub(testResource, 'getSubResourceFromApi')
+        const fromApiStub = sandbox.stub(testResource, '_getSubResourceFromApi')
         fromApiStub.resolves(true)
 
-        return testResource.getSubResource('testChild', testID)
+        return testResource._getSubResource('testChild', testID)
           .then(() => {
             fromApiStub.should.have.been.calledWith('testChild', testID)
           })
       })
     })
 
-    describe('getSubResourceFromApi method tests', () => {
+    describe('_getSubResourceFromApi method tests', () => {
       before(() => {
         BaseResource.children = {
           testChild: {
@@ -428,7 +428,7 @@ describe('BaseResource class tests', () => {
 
         const testID = uuid()
 
-        testResource.getSubResourceFromApi('testChild', testID)
+        testResource._getSubResourceFromApi('testChild', testID)
         getStub.should.have.been.calledWith(testResourceID, testID)
       })
 
@@ -441,7 +441,7 @@ describe('BaseResource class tests', () => {
         const testResource = new BaseResource(testResourceID, { api: testAxios })
         testResource.subResources.testChild = new Map()
 
-        return testResource.getSubResourceFromApi('testChild', testID)
+        return testResource._getSubResourceFromApi('testChild', testID)
           .then(() => {
             testResource.subResources.testChild.get(testID).should.be.an.instanceOf(BaseResource)
           })
@@ -456,7 +456,7 @@ describe('BaseResource class tests', () => {
         const testResource = new BaseResource(testResourceID, { api: testAxios })
         delete testResource.subResources.testChild
 
-        return testResource.getSubResourceFromApi('testChild', testID)
+        return testResource._getSubResourceFromApi('testChild', testID)
           .then(() => {
             testResource.subResources.testChild.should.be.an.instanceOf(Map)
             testResource.subResources.testChild.get(testID).should.be.an.instanceOf(BaseResource)
@@ -472,7 +472,7 @@ describe('BaseResource class tests', () => {
         const testResourceID = uuid()
         const testResource = new BaseResource(testResourceID, { api: testAxios })
 
-        return testResource.getSubResourceFromApi('testChild', testID)
+        return testResource._getSubResourceFromApi('testChild', testID)
           .then((res) => {
             res.should.deep.equal(testSubResource)
           })

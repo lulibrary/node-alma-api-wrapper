@@ -266,11 +266,11 @@ describe('User class tests', () => {
         })
       })
 
-      it('should call BaseResource#getSubResourceMap with parameter "loans"', () => {
+      it('should call BaseResource#_getSubResourceMap with parameter "loans"', () => {
         const testUserID = uuid()
         const testUser = new User({ primary_id: testUserID })
 
-        const getSubStub = sandbox.stub(BaseResource.prototype, 'getSubResourceMap')
+        const getSubStub = sandbox.stub(BaseResource.prototype, '_getSubResourceMap')
         getSubStub.resolves(true)
 
         return testUser.loans().then(() => {
@@ -280,11 +280,11 @@ describe('User class tests', () => {
     })
 
     describe('requests method tests', () => {
-      it('should call BaseResource#getSubResourceMap with parameter "requests"', () => {
+      it('should call BaseResource#_getSubResourceMap with parameter "requests"', () => {
         const testUserID = uuid()
         const testUser = new User({ primary_id: testUserID })
 
-        const getSubStub = sandbox.stub(BaseResource.prototype, 'getSubResourceMap')
+        const getSubStub = sandbox.stub(BaseResource.prototype, '_getSubResourceMap')
         getSubStub.resolves(true)
 
         return testUser.requests().then(() => {
