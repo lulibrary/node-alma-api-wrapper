@@ -3,7 +3,7 @@ const BaseResource = require('./base-resource')
 class UserFee extends BaseResource {}
 
 UserFee.config = {
-  path: (userID, feeID) => `/users/${userID}/fee/${feeID}`,
+  path: (userID, feeID) => `/users/${userID}/fees/${feeID}`,
   id: 'id'
 }
 
