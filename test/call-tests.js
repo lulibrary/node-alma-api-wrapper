@@ -12,6 +12,7 @@ const uuid = require('uuid/v4')
 const User = require('../src/user')
 const UserLoan = require('../src/user-loan')
 const UserRequest = require('../src/user-request')
+const UserFee = require('../src/user-fee')
 
 // Module under test
 const AlmaClient = require('../src/alma-client')
@@ -268,6 +269,55 @@ describe('api call tests', () => {
       axiosStub.rejects(new Error('Request failed with status code 500'))
 
       return almaApi.users.for(uuid()).getRequest(uuid()).should.eventually.be.rejectedWith('Request failed with status code 500')
+    })
+  })
+
+  describe('path: /users/<userID/fees', () => {
+    it('should call the api with the correct path', () => {
+      const testUserID = uuid()
+
+      const axiosStub = sandbox.stub(almaApi.api, 'get')
+      axiosStub.resolves({ fee: [] })
+
+      return almaApi.users.for(testUserID).fees()
+        .then(() => {
+          axiosStub.should.have.been.calledWith('/users/' + testUserID + '/fees')
+        })
+    })
+
+    it('should resolve with a Map of UserRequest instances', () => {
+      const testUserID = uuid()
+      const testFeeIDs = [uuid(), uuid(), uuid()]
+
+      const apiResponse = {
+        fee: [
+          {
+            id: testFeeIDs[0],
+            userID: testUserID,
+            title: uuid()
+          }, {
+            id: testFeeIDs[1],
+            userID: testUserID,
+            title: uuid()
+          }, {
+            id: testFeeIDs[2],
+            userID: testUserID,
+            title: uuid()
+          }
+        ]
+      }
+
+      const axiosStub = sandbox.stub(almaApi.api, 'get')
+      axiosStub.resolves(apiResponse)
+
+      return almaApi.users.for(testUserID).fees()
+        .then((res) => {
+          res.should.be.an.instanceOf(Map)
+          for (let i = 0; i < 3; i++) {
+            res.get(testFeeIDs[i]).should.be.an.instanceOf(UserFee)
+            res.get(testFeeIDs[i]).data.should.deep.equal(apiResponse.fee[i])
+          }
+        })
     })
   })
 })
