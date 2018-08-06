@@ -304,6 +304,54 @@ describe('User class tests', () => {
         })
       })
     })
+
+    describe('getLoanFromApi method tests', () => {
+      describe('should call _getSubResourceFromApi', () => {
+        const testUserID = uuid()
+        const testUser = new User({ primary_id: testUserID })
+        const testLoanID = uuid()
+
+        const fromApiStub = sandbox.stub(testUser, '_getSubResourceFromApi')
+        fromApiStub.resolves()
+
+        return testUser.getLoanFromApi(testLoanID)
+          .then(() => {
+            fromApiStub.should.have.been.calledWith('loans', testLoanID)
+          })
+      })
+    })
+
+    describe('getRequestFromApi method tests', () => {
+      describe('should call _getSubResourceFromApi', () => {
+        const testUserID = uuid()
+        const testUser = new User({ primary_id: testUserID })
+        const testRequestID = uuid()
+
+        const fromApiStub = sandbox.stub(testUser, '_getSubResourceFromApi')
+        fromApiStub.resolves()
+
+        return testUser.getRequestFromApi(testRequestID)
+          .then(() => {
+            fromApiStub.should.have.been.calledWith('requests', testRequestID)
+          })
+      })
+    })
+
+    describe('getFeeFromApi method tests', () => {
+      describe('should call _getSubResourceFromApi', () => {
+        const testUserID = uuid()
+        const testUser = new User({ primary_id: testUserID })
+        const testFeeID = uuid()
+
+        const fromApiStub = sandbox.stub(testUser, '_getSubResourceFromApi')
+        fromApiStub.resolves()
+
+        return testUser.getFeeFromApi(testFeeID)
+          .then(() => {
+            fromApiStub.should.have.been.calledWith('fees', testFeeID)
+          })
+      })
+    })
   })
 
   describe('configuration tests', () => {
